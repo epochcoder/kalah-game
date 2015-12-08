@@ -1,25 +1,49 @@
 package com.github.epochcoder.kalah.game.entity;
 
-import com.github.epochcoder.kalah.game.Kalah;
 import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * a store that may contain an arbitrary number of seeds,
- * this Store has no concept of where it is or to which player it belongs,
- * the <tt>Player</tt> object manages it
+ * a store that may contain an arbitrary number of seeds.
  * @author Willie Scholtz
  */
-final class Store extends SeedAcceptor {
+public final class Store extends SeedAcceptor {
 
     private static final Logger LOG = LoggerFactory.getLogger(Store.class);
 
+    public Store(final Player player) {
+        // substititue the playerId as store id since players only have one store
+        super(player, player.getPlayerId());
+    }
+
     @Override
-    public String getAcceptorId() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void acceptorEmpty() {
+        Preconditions.checkState(true, "store should never be empty "
+                + "as a result of acceptorEmpty() call!");
+    }
+
+    @Override
+    public boolean acceptorReceivedLast(final boolean normalMove) {
+        final Player storeOwner = this.getPlayer();
+        if (normalMove) {
+            // if the last sown seed lands in the player's store, the player gets an additional move.
+            storeOwner.getGame().getKalahListener().freeMove(storeOwner);
+
+            // indicate to the caller we have another move
+            return true;
+        }
+
+        return false;
     }
 
 
-
+    @Override
+    public String toString() {
+        return "Store{"
+                + "storeId=" + this.getPlayer().getPlayerId()
+                + ", playerName=" + this.getPlayer().getPlayerName()
+                + ", seedCnt=" + this.amountOfSeeds()
+                + '}';
+    }
 }
