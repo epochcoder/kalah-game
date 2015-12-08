@@ -20,9 +20,14 @@ public final class KalahConfiguration {
     public static final int MIN_SEEDS = 3;
 
     /**
-     * the total amount of houses (pits) that this game of kalah has
+     * the minimum total amount of houses (pits) that this game of kalah has
      */
-    private static final int PIT_COUNT = 6;
+    public static final int MIN_PIT_COUNT = 2;
+
+    /**
+     * the maximum amount of houses (pits) that this game of kalah has
+     */
+    public static final int MAX_PIT_COUNT = 6;
 
     private final int pits;
     private final int seeds;
@@ -40,8 +45,8 @@ public final class KalahConfiguration {
 
         // checking that we have a valid amount of pits, each player should
         // at least have one pit, but not more that the game's maximum
-        Preconditions.checkArgument(this.pits >= 2 && this.pits <= PIT_COUNT,
-                "invalid amount of pits, should be (%s <= pits >= 2)", PIT_COUNT);
+        Preconditions.checkArgument(this.pits >= MIN_PIT_COUNT && this.pits <= MAX_PIT_COUNT,
+                "invalid amount of pits, should be (%s <= pits >= 2)", MAX_PIT_COUNT);
 
         // ensure that the seeds per pit is valid, this is defined as a constant in Pit
         Preconditions.checkArgument(this.seeds >= MIN_SEEDS && this.seeds <= MAX_SEEDS,
