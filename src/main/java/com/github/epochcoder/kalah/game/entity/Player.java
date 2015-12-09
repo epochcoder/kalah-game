@@ -111,14 +111,6 @@ public abstract class Player {
     }
 
     /**
-     * main entry point into a players turn, subclasses must
-     * override this to implement specific play semantics,
-     * for instance a human player or or an AI player
-     * @throws KalahException if any validation issues occur during play
-     */
-    public abstract void play() throws KalahException;
-
-    /**
      * starts the sow process from the specified pitId
      * @param pitId the pitId to start sowing seeds from
      * @throws KalahException thrown when any game validation issues occur
