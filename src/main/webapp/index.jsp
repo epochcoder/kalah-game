@@ -1,98 +1,93 @@
-<%-- 
-    Document   : index
-    Created on : Dec 8, 2015, 7:02:26 PM
-    Author     : Willie Scholtz
---%>
-<%@page import="java.io.IOException"%>
-<%@page import="com.github.epochcoder.kalah.game.entity.impl.RandomPlayer"%>
-<%@page import="com.github.epochcoder.kalah.game.entity.Seed"%>
-<%@page import="com.github.epochcoder.kalah.game.entity.SeedAcceptor"%>
-<%@page import="com.github.epochcoder.kalah.game.KalahException"%>
-<%@page import="com.github.epochcoder.kalah.game.entity.Pit"%>
-<%@page import="com.github.epochcoder.kalah.game.entity.Player"%>
-<%@page import="com.github.epochcoder.kalah.game.events.KalahListener"%>
-<%@page import="com.github.epochcoder.kalah.game.Kalah"%>
-<%@page import="com.github.epochcoder.kalah.game.KalahConfiguration"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html class="no-js" lang="">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Random Play - [CPU1 vs CPU 2]</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="resources/css/vendor/bootstrap.min.css">
+        <style>
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+            }
+        </style>
+        <link rel="stylesheet" href="resources/css/vendor/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="resources/css/main.css">
+
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+            <script>window.html5 || document.write('<script src="resources/js/vendor/html5shiv.js"><\/script>')</script>
+        <![endif]-->
     </head>
     <body>
-        <h1>Random Play - [CPU1 vs CPU 2]</h1>
-        <ol>
-        <%
-            final JspWriter out2 = out;
-            
-            KalahConfiguration conofig = new KalahConfiguration(3, 3);
-            Kalah game = new Kalah(conofig, new KalahListener() {
-                private void println(String msg) {
-                    try {
-                        out2.println("<li>" + msg + "</li>");
-                    } catch (IOException ioe) {};
-                }
-                
-                @Override
-                public void gameStart() {
-                    println("starting new game of Kalah");
-                }
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Kalah</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Home</a></li>
+                        <li><a href="https://en.wikipedia.org/wiki/Kalah">About</a></li>
+                        <li><a href="https://github.com/epochcoder">Contact</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                Game Options 
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">New Game</a></li>
+                                <li title="See what happens with direct game output">
+                                    <a href="random.jsp">Random CPU vs Random CPU</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-                @Override
-                public void gameEnd(Player whoWon, Player whoLost) {
-                    if (whoWon == null || whoLost == null) {
-                        println("game ended, it was a tie!");
-                    } else {
-                        println("game ended:");
-                        println("\tplayer[" + whoWon  + "] won :) - score="
-                                + whoWon.getScore(false, true));
-                        println("\tplayer[" + whoLost + "] lost :( - score=" 
-                                + whoLost.getScore(false, true));
-                    }
-                }
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h2>Heading</h2>
+                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+                    <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+                </div>
+                <div class="col-md-4">
+                    <h2>Heading</h2>
+                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+                    <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+                </div>
+                <div class="col-md-4">
+                    <h2>Heading</h2>
+                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                    <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+                </div>
+            </div>
 
-                @Override
-                public void sowStart(Player player, Pit fromPit) {
-                    println("player[" + player + "] started sowing from pit[" + fromPit + "]");
-                }
+            <hr>
 
-                @Override
-                public void sowEnd(Player player, Pit fromPit) {
-                    println("player[" + player + "] ended sowing from pit[" + fromPit + "]");
-                }
-
-                @Override
-                public void playerSwitch(Player newPlayer) {
-                    println("game switched players to [" + newPlayer + "]");
-                }
-
-                @Override
-                public void freeMove(Player forPlayer) {
-                     println("player[" + forPlayer + "] has a free move!");
-                }
-
-                @Override
-                public void pitEmpty(Pit pit) {
-                    println("pit[" + pit + "] is now empty!");
-                }
-
-                @Override
-                public void seedAdded(SeedAcceptor acceptor, Seed seed) {
-                    println("acceptor[" + acceptor 
-                            + "] received seed["  + seed + "]");
-                }
-            });
-        
-            game.setPlayerOne(new RandomPlayer(game, 1, "CPU 1"));
-            game.setPlayerTwo(new RandomPlayer(game, 2, "CPU 2"));
-            game.startGame();
-
-            while (game.isEndOfGame() == null) {
-                // play the game until it completes randomly
-                ((RandomPlayer) game.getCurrentPlayer()).play();    
-            }
-        %>
-        </ol>
+            <footer>
+                <p><a href="https://github.com/epochcoder">&copy; epochcoder</a> 2015</p>
+            </footer>
+        </div>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="resources/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+        <script src="resources/js/vendor/bootstrap.min.js"></script>
+        <script src="resources/js/main.js"></script>
     </body>
 </html>

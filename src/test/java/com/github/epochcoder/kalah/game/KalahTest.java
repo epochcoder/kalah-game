@@ -5,65 +5,96 @@ import com.github.epochcoder.kalah.game.entity.Player;
 import com.github.epochcoder.kalah.game.entity.Seed;
 import com.github.epochcoder.kalah.game.entity.SeedAcceptor;
 import com.github.epochcoder.kalah.game.events.KalahListener;
+import org.junit.Assert;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
 
 /**
  * Tests the complete Kalah game according to known 6,3 plays.
- *
- * All tests are executed in the order they appear in the source because of their naming.
- * A, B, C, etc.
  * @author Willie Scholtz
  */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class KalahTest {
 
-    private final KalahConfiguration gameConfig = new KalahConfiguration(6, 3);
-    private final Kalah game = new Kalah(this.gameConfig, new NullListener());
-    private final Player pOne = new ArgumentPlayer(this.game, 1, "Player 1");
-    private final Player pTwo = new ArgumentPlayer(this.game, 2, "Player 2");
+    private Kalah createGame(boolean addPlayerOne, boolean addPlayerTwo) {
+        final KalahConfiguration gameConfig = new KalahConfiguration(6, 3);
+        final Kalah game = new Kalah(gameConfig, new NullListener());
 
-    public KalahTest() {
+        if (addPlayerOne) {
+            final ArgumentPlayer pOne = new ArgumentPlayer(game, 1, "Player 1");
+            assertTrue("player is already set!", game.getPlayerOne() == null);
+            game.setPlayerOne(pOne);
+        }
+
+        if (addPlayerTwo) {
+            final ArgumentPlayer pTwo = new ArgumentPlayer(game, 2, "Player 2");
+            assertTrue("player is already set!", game.getPlayerTwo() == null);
+            game.setPlayerTwo(pTwo);
+        }
+
+        return game;
     }
 
-    /**
-     * tests that the current game has no players set
-     */
     @Test
-    public void aTestNoPlayers() {
+    public void testNoPlayers() {
+        Kalah game = createGame(false, false);
         try {
-            this.game.getCurrentPlayer();
+            game.getCurrentPlayer();
             fail("Should have thrown InvalidArgumentException, but did not!");
         } catch (final Exception e) {
             assertTrue("incorrect exception!", e.getMessage().startsWith("no players set!"));
         }
     }
 
-    /**
-     * tests that the first player is has been set
-     */
     @Test
-    public void bTestSetFirstPlayer() {
-//        this.game.setPlayerOne(new Player(game, 0, playerName) {
-//            @Override
-//            public void play() throws KalahException {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//        });
-//        try {
-//            this.game.setgetCurrentPlayer();
-//            fail("Should have thrown InvalidArgumentException, but did not!");
-//        } catch (final Exception e) {
-//            assertTrue("incorrect exception!", e.getMessage().startsWith("no players set!"));
-//        }
+    public void testPlayerOne() {
+        Kalah game = createGame(true, false);
+
+        assertTrue("player does not have a store!",
+                game.getPlayerOne().getStore() != null);
+
+        Assert.assertEquals("player pits initialized incorrectly",
+                game.getConfiguration().getPits() * game.getConfiguration().getSeeds(),
+                game.getPlayerOne().getScore(true, true));
     }
+
+    @Test
+    public void testPlayerTwo() {
+        Kalah game = createGame(false, true);
+
+        assertTrue("player does not have a store!",
+                game.getPlayerTwo().getStore() != null);
+
+        Assert.assertEquals("player pits initialized incorrectly",
+                game.getConfiguration().getPits() * game.getConfiguration().getSeeds(),
+                game.getPlayerTwo().getScore(true, true));
+    }
+
+
+    @Test
+    public void testOpponent() {
+        Kalah game = createGame(true, true);
+
+        assertTrue("player one does not have opponent!",
+                game.getPlayerOne().getOpponent() != null);
+        assertTrue("player two does not have opponent!",
+                game.getPlayerOne().getOpponent() != null);
+
+        assertTrue("player one has invalid opponent!",
+                game.getPlayerOne().getOpponent().equals(game.getPlayerTwo()));
+        assertTrue("player two has invalid opponent!",
+                game.getPlayerTwo().getOpponent().equals(game.getPlayerOne()));
+    }
+
+    // --------------------------------- HELPER CLASSES -----------------------------------
 
     private static class ArgumentPlayer extends Player {
         public ArgumentPlayer(Kalah game, int id, String name) {
             super(game, id, name);
+        }
+
+        public void playFromArgument(int pitId) throws KalahException {
+            this.sowFromPit(pitId);
         }
     }
 
