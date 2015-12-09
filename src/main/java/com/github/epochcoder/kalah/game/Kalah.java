@@ -3,8 +3,6 @@ package com.github.epochcoder.kalah.game;
 import com.github.epochcoder.kalah.game.entity.Player;
 import com.github.epochcoder.kalah.game.events.KalahListener;
 import com.google.common.base.Preconditions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -14,8 +12,6 @@ import org.slf4j.LoggerFactory;
  * @see http://kalaha.krus.dk/
  */
 public final class Kalah {
-
-    private static final Logger LOG = LoggerFactory.getLogger(Kalah.class);
 
     private final KalahConfiguration configuration;
     private final KalahListener listener;

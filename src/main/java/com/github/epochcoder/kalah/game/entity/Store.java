@@ -1,16 +1,12 @@
 package com.github.epochcoder.kalah.game.entity;
 
 import com.google.common.base.Preconditions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * a store that may contain an arbitrary number of seeds.
  * @author Willie Scholtz
  */
 public final class Store extends SeedAcceptor {
-
-    private static final Logger LOG = LoggerFactory.getLogger(Store.class);
 
     public Store(final Player player) {
         // substititue the playerId as store id since players only have one store

@@ -62,7 +62,7 @@ public final class Pit extends SeedAcceptor {
      */
     public Pit getOppositePit(final Player oppositePlayer) {
         // take the amount of configured pits and subtract the
-        // current pitId and 1 (zeri based id's)
+        // current pitId and 1 (zero based id's)
         // to retrieve the pit opposite this one
         return oppositePlayer.getPitById(this.configuration.getPits() - this.getPitId() - 1);
     }
