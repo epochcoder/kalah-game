@@ -29,12 +29,20 @@
             Kalah game = new Kalah(conofig, new KalahListener() {
                 @Override
                 public void gameStart() {
-                    System.out.println("starting....");
+                    System.out.println("starting new game of Kalah");
                 }
 
                 @Override
-                public void gameEnd(Player whoWon) {
-                    System.out.println("ending.... player[" + whoWon + "] won!");
+                public void gameEnd(Player whoWon, Player whoLost) {
+                    if (whoWon == null || whoLost == null) {
+                        System.out.println("game ended, it was a tie!");
+                    } else {
+                        System.out.println("game ended:");
+                        System.out.println("\tplayer[" + whoWon 
+                                + "] won :) - score=" + whoWon.getScore(false, true));
+                        System.out.println("\tplayer[" + whoLost 
+                                + "] lost :(- score=" + whoLost.getScore(false, true));
+                    }
                 }
 
                 @Override
@@ -63,23 +71,33 @@
                 }
 
                 @Override
-                public void seedAdded(Player player, SeedAcceptor acceptor, Seed seed) {
-                    System.out.println("player[" + player + "] received seed[" 
-                            + seed + "] in acceptor[" + acceptor + "]");
+                public void seedAdded(SeedAcceptor acceptor, Seed seed) {
+                    System.out.println("acceptor[" + acceptor 
+                            + "] received seed["  + seed + "]");
                 }
             });
         
             game.setPlayerOne(new Player(game, 1, "Willie") {
                 @Override
                 public void play() throws KalahException { 
-                    this.sowFromPit((int) Math.round(Math.random() * 2d));
+                    Pit p = this.getPitById((int) Math.round(Math.random() * 2d));
+                    while (p.amountOfSeeds() == 0) {
+                        p = this.getPitById((int) Math.round(Math.random() * 2d));
+                    }
+
+                    this.sowFromPit(p.getPitId());
                 }
             });
 
             game.setPlayerTwo(new Player(game, 2, "Rudi") {
                 @Override
                 public void play() throws KalahException {
-                    this.sowFromPit((int) Math.round(Math.random() * 2d));
+                    Pit p = this.getPitById((int) Math.round(Math.random() * 2d));
+                    while (p.amountOfSeeds() == 0) {
+                        p = this.getPitById((int) Math.round(Math.random() * 2d));
+                    }
+
+                    this.sowFromPit(p.getPitId());
                 }
             });
             

@@ -43,12 +43,12 @@ public abstract class Player {
         this.game = Preconditions.checkNotNull(game,
                 "cannot create a Player without a valid Game!");
 
-        LOG.debug("creating new store for player[{}]", playerId);
+        LOG.debug("creating new store for player[{}]", playerName);
         // create a new empty store for this player, this store will keep
         // track of the players seeds, and inevitably his score
         this.store = new Store(this);
 
-        LOG.debug("creating pits for player[{}]", playerId);
+        LOG.debug("creating pits for player[{}]", playerName);
         // initialize this players pits with the configured amount of pits per side
         // using an array since we know this will be fixed size.
         this.pits = new Pit[this.game.getConfiguration().getPits()];
@@ -95,12 +95,10 @@ public abstract class Player {
 
         final List<SeedAcceptor> acceptors = Lists.newArrayList();
         if (includePitScore) {
-            LOG.debug("including pit score for player[{}]", this.playerId);
             acceptors.addAll(Arrays.asList(this.pits));
         }
 
         if (includeStoreScore) {
-            LOG.debug("including store score for player[{}]", this.playerId);
             acceptors.add(this.store);
         }
 
@@ -126,8 +124,10 @@ public abstract class Player {
      * @throws KalahException thrown when any game validation issues occur
      */
     protected final void sowFromPit(int pitId) throws KalahException {
-        Preconditions.checkState(this.equals(this.game.getCurrentPlayer()), "player[" + this
-                + "] is not the current player, and may not play this round!");
+        // ensure we are allowed to play
+        if (!this.equals(this.game.getCurrentPlayer())) {
+            throw new KalahException(KalahException.KalahProblem.NOT_YOUR_TURN);
+        }
 
          // look for the pit that we should start sowing from
         final Pit usePit = this.getPitById(pitId);
@@ -166,15 +166,31 @@ public abstract class Player {
         // distribute all seeds around the ring
         SeedAcceptor nextAcceptor = null;
         while (usePit.amountOfSeeds() > 0) {
-            // next acceptor will only be null on the first run, drop first seed in next pit, or the next acceptor
-            final int currentIndex = gameRing.indexOf(nextAcceptor == null ? usePit : nextAcceptor);
+            int lCnt = 0;
+            do {
+                // next acceptor will only be null on the first run, drop first seed in next pit, or the next acceptor
+                final int currentIndex = gameRing.indexOf(nextAcceptor == null ? usePit : nextAcceptor);
 
-            // get the next acceptor to use
-            nextAcceptor = currentIndex == (gameRing.size() - 1)
-                     // if we were at the end, jump to the first one
-                    ? gameRing.getFirst()
-                     // else we just get the next one in our ring
-                    : gameRing.get(currentIndex + 1);
+                // get the next acceptor to use
+                nextAcceptor = currentIndex == (gameRing.size() - 1)
+                         // if we were at the end, jump to the first one
+                        ? gameRing.getFirst()
+                         // else we just get the next one in our ring
+                        : gameRing.get(currentIndex + 1);
+
+                // this loop should never exevute more than two times
+                Preconditions.checkState(++lCnt <= 2, "gameRing error, nextAcceptor "
+                        + "was the current pit more than two times!");
+                if (lCnt == 2) {
+                    LOG.debug("chose the next pit as the chosen "
+                            + "pit was our distribution centre!");
+                }
+
+                // in cases where the seeds go full cirlce, and land in the pit we are sowning from
+                // we choose the next pit and apply all the same rules as the normal game.
+                // i'm basically making this upas I could not find any official rule for this
+                // but it really does not make sense to transer to ourselves!
+            } while (nextAcceptor.equals(usePit));
 
             // transfer :) our acceptors will handle game rules
             // freeMove can only possibly be true on the last
@@ -189,6 +205,9 @@ public abstract class Player {
         // additionally, switch players, and updates scores
         Player endGamePlayer;
         if ((endGamePlayer = this.game.isEndOfGame()) != null) {
+            LOG.debug("player[{}] has used all their seeds, moving opponent "
+                    + "seeds to their store!", endGamePlayer.getPlayerName());
+
             // the other player moves all remaining seeds to their store,
             // and the player with the most seeds in their store wins.
             final Player endGameOpponent = endGamePlayer.getOpponent();
@@ -198,6 +217,8 @@ public abstract class Player {
                 pit.distributeAll(endGameOpponent.getStore());
             }
 
+            LOG.debug("all seeds are now in stores, determine who won!");
+
             // determine who won the game?
             final Player playerOne = this.getGame().getPlayerOne();
             final Player playerTwo = this.getGame().getPlayerTwo();
@@ -205,11 +226,15 @@ public abstract class Player {
             final int p1Score = playerOne.getScore(false, true);
             final int p2Score = playerTwo.getScore(false, true);
 
-            this.game.endGame(p1Score > p2Score
+            final Player whoWon = p1Score > p2Score
                     ? playerOne // player one won!
                     : p1Score == p2Score
                             ? null // tie
-                            : playerTwo); // player two won!);
+                            : playerTwo;
+            final Player whoLost = whoWon == null
+                    ? null : whoWon.getOpponent();
+
+            this.game.endGame(whoWon, whoLost);
         } else if (!freeMove) {
             // change the player to the other player
             this.game.setCurrentPlayer(oppositePlayer);

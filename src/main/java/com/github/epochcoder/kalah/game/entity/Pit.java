@@ -93,7 +93,10 @@ public final class Pit extends SeedAcceptor {
 
             // if the opposite pit has seeds, we transfer ours and theirs to our store
             if (oppositePit.amountOfSeeds() > 0) {
-                final Store store = this.getPlayer().getStore();
+                final Store store = pitOwner.getStore();
+                
+                LOG.debug("taking all seeds from pit[{}] and transferring to player[{}] store",
+                        oppositePit, pitOwner.getPlayerName());
 
                 // take our new seed and the opponent's seeds and transfer to our store
                 oppositePit.distributeAll(store);

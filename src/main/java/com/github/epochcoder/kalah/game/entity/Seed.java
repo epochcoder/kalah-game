@@ -39,6 +39,7 @@ public final class Seed {
      * @param player the player to set the owner to
      */
     public synchronized void setCurrentPlayer(final Player player) {
+        LOG.trace("seed[{}] changing owner to player[{}]", this, player);
         this.currentPlayer = player;
     }
 

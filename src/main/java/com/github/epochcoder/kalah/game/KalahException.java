@@ -19,6 +19,7 @@ public class KalahException extends Exception {
 
     public static enum KalahProblem {
         INVALID_PIT,
-        NO_SEEDS_IN_PIT
+        NO_SEEDS_IN_PIT,
+        NOT_YOUR_TURN
     }
 }

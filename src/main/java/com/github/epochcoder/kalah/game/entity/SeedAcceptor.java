@@ -4,6 +4,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Queues;
 import java.util.Objects;
 import java.util.Queue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class manages seeds internally and should be subclassed to
@@ -11,6 +13,8 @@ import java.util.Queue;
  * @author Willie Scholtz
  */
 public abstract class SeedAcceptor {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SeedAcceptor.class);
 
     private final Player player;
     private final Queue<Seed> seeds;
@@ -28,8 +32,8 @@ public abstract class SeedAcceptor {
 
         // acceptors need to be unique per game, this is accomplished
         // by assigning acceptors per player
-        this.acceptorId = "acceptor_" + this.player.getPlayerId()
-                + "_" + String.valueOf(acceptorId);
+        this.acceptorId = "acceptor_" + this.getClass().getSimpleName().toLowerCase()
+                + "_pId" + this.player.getPlayerId() + "_aId" + String.valueOf(acceptorId);
     }
 
     /**
@@ -60,6 +64,9 @@ public abstract class SeedAcceptor {
      * @param acceptor the acceptor to distribute the seeds to
      */
     protected final void distributeAll(final SeedAcceptor acceptor) {
+        LOG.debug("distibuting all seeds from "
+                + "acceptor[{}] to acceptor[{}]", this, acceptor);
+
         while (!this.seeds.isEmpty()) {
             this.distributeTo(acceptor, false);
         }
@@ -94,10 +101,16 @@ public abstract class SeedAcceptor {
             Preconditions.checkState(transferSeed != null,
                     "seed to transfer was null!");
 
+            LOG.trace("distibuting seed[{}] from acceptor[{}] to acceptor[{}]",
+                    transferSeed, this.acceptorId, acceptor.acceptorId);
+
             // send the seed to the source acceptor
             acceptor.accept(transferSeed);
 
             if (this.seeds.isEmpty()) {
+                LOG.trace("acceptor[{}] is now empty, acceptor[{}] received the last seed[{}]",
+                        this.acceptorId, acceptor.acceptorId, transferSeed);
+
                 // let the source know it is empty
                 this.acceptorEmpty();
 
@@ -117,6 +130,8 @@ public abstract class SeedAcceptor {
     protected final void accept(final Seed seed) {
         Preconditions.checkNotNull(seed, "cannot accept a null seed!");
 
+        LOG.trace("acceptor[{}] accepting seed[{}]", this.acceptorId, seed);
+
         // set the current player for the seed
         seed.setCurrentPlayer(this.getPlayer());
 
@@ -125,7 +140,7 @@ public abstract class SeedAcceptor {
 
         // let the game listener know this acceptor received a seed
         this.getPlayer().getGame().getKalahListener()
-                .seedAdded(this.getPlayer(), this, seed);
+                .seedAdded(this, seed);
     }
 
     /**
@@ -169,12 +184,5 @@ public abstract class SeedAcceptor {
         }
 
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "SeedAcceptor{"
-                + "acceptorId=" + acceptorId
-                + '}';
     }
 }

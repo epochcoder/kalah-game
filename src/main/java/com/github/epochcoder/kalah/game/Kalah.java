@@ -46,21 +46,20 @@ public final class Kalah {
     public void startGame() {
         Preconditions.checkState(!this.started, "game has already started!");
         this.started = true;
-        
+
         this.getKalahListener().gameStart();
     }
 
     /**
-     * starts this game of Kalah
-     * @param whoWon the player who won this game?
+     * ends this game of Kalah with the results of the game.
+     * @param whoWon the player who won this game, null if the game was tied
+     * @param whoLost the player who lost this game, null if the game was tied
      */
-    public void endGame(final Player whoWon) {
-        Preconditions.checkNotNull(whoWon, "game cannot end witout a player that won!");
+    public void endGame(final Player whoWon, final Player whoLost) {
         Preconditions.checkState(this.started, "game has not been started yet!");
-
         this.started = false;
 
-        this.getKalahListener().gameEnd(whoWon);
+        this.getKalahListener().gameEnd(whoWon, whoLost);
     }
 
     /**
