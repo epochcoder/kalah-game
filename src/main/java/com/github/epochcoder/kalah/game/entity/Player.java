@@ -5,6 +5,7 @@ import com.github.epochcoder.kalah.game.KalahException;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,11 +18,12 @@ import org.slf4j.LoggerFactory;
  * This class must be subclassed to provide play specific implementations.
  * @author Willie Scholtz
  */
-public abstract class Player {
+public abstract class Player implements Serializable {
 
+    private static final long serialVersionUID = 383837985291719651L;
     private static final Logger LOG = LoggerFactory.getLogger(Player.class);
 
-    private final Kalah game;
+    private final transient Kalah game;
     private final Store store;
     private final Pit[] pits;
 

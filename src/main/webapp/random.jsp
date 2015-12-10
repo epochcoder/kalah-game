@@ -70,6 +70,9 @@
                     These random players just try to play the game without making invalid moves,
                     it does not have any AI beyond that
                 </p>
+                <p>
+                    This game is played with 3 seeds per pit, and 3 pits per side for output brevity.
+                </p>
             </div>
         </div>
         <div class="container">

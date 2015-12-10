@@ -1,5 +1,6 @@
 package com.github.epochcoder.kalah.game.entity;
 
+import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,8 +10,9 @@ import org.slf4j.LoggerFactory;
  * be placed in players houses or stores
  * @author Willie Scholtz
  */
-public final class Seed {
-
+public final class Seed implements Serializable {
+    
+    private static final long serialVersionUID = 7075048896013032916L;
     private static final Logger LOG = LoggerFactory.getLogger(Seed.class);
 
     /**
@@ -20,10 +22,11 @@ public final class Seed {
      */
     private static final AtomicInteger SEED_COUNTER = new AtomicInteger();
 
+
     /**
      * the player that this seed currently belongs to
      */
-    private Player currentPlayer;
+    private transient Player currentPlayer;
 
     private final int seedId;
 

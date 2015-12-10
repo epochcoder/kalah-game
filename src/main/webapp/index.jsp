@@ -49,7 +49,7 @@
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">New Game</a></li>
+                                <li><a href="#">New Local Game</a></li>
                                 <li title="See what happens with direct game output">
                                     <a href="random.jsp">Random CPU vs Random CPU</a>
                                 </li>
@@ -59,28 +59,48 @@
                 </div>
             </div>
         </nav>
-
         <div class="container">
             <div class="row">
+                <div class="col-md-1"></div>
                 <div class="col-md-4">
-                    <h2>Heading</h2>
-                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                    <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+                    <form id="newGameForm" class="form-group">
+                        <div class="form-group">
+                            <label for="playerTwo">Player One Name</label>
+                            <input type="text" class="form-control" id="playerOne" placeholder="Luke">
+                        </div>
+                        <div class="form-group">
+                            <label for="playerOne">Player Two Name</label>
+                            <input type="text" class="form-control" id="playerTwo" placeholder="Darth">
+                        </div>
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary">Start Game</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="col-md-4">
-                    <h2>Heading</h2>
-                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                    <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-                </div>
-                <div class="col-md-4">
-                    <h2>Heading</h2>
-                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                    <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-                </div>
+                <div class="col-md-7"></div>
             </div>
-
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <canvas id="game"></canvas>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div id="output">
+                        <p>
+                            <div class="alert alert-success" role="alert">...</div>
+                            <div class="alert alert-info" role="alert">...</div>
+                            <div class="alert alert-warning" role="alert">...</div>
+                            <div class="alert alert-danger" role="alert">...</div>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
             <hr>
-
             <footer>
                 <p><a href="https://github.com/epochcoder">&copy; epochcoder</a> 2015</p>
             </footer>
@@ -88,6 +108,7 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="resources/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
         <script src="resources/js/vendor/bootstrap.min.js"></script>
+        <script src="resources/js/vendor/raf.js"></script>
         <script src="resources/js/main.js"></script>
     </body>
 </html>

@@ -14,9 +14,10 @@ import org.slf4j.LoggerFactory;
  */
 public final class Pit extends SeedAcceptor {
 
+    private static final long serialVersionUID = 4864882643115895129L;
     private static final Logger LOG = LoggerFactory.getLogger(Pit.class);
 
-    private final KalahConfiguration configuration;
+    private final transient KalahConfiguration configuration;
     private final int pitId;
 
     /**

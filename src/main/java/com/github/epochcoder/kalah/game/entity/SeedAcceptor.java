@@ -2,6 +2,7 @@ package com.github.epochcoder.kalah.game.entity;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Queues;
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Queue;
 import org.slf4j.Logger;
@@ -12,13 +13,14 @@ import org.slf4j.LoggerFactory;
  * provide specific implementations of seeds should be handled
  * @author Willie Scholtz
  */
-public abstract class SeedAcceptor {
+public abstract class SeedAcceptor implements Serializable {
 
+    private static final long serialVersionUID = 2083442100764237031L;
     private static final Logger LOG = LoggerFactory.getLogger(SeedAcceptor.class);
 
-    private final Player player;
+    private final transient String acceptorId;
+    private final transient Player player;
     private final Queue<Seed> seeds;
-    private final String acceptorId;
 
     /**
      * constructs a new SeedAcceptor with the specified player a base

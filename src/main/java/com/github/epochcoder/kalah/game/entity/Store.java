@@ -7,6 +7,8 @@ import com.google.common.base.Preconditions;
  * @author Willie Scholtz
  */
 public final class Store extends SeedAcceptor {
+    
+    private static final long serialVersionUID = -6076885206830186376L;
 
     public Store(final Player player) {
         // substititue the playerId as store id since players only have one store

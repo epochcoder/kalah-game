@@ -4,7 +4,6 @@ import com.github.epochcoder.kalah.game.entity.Player;
 import com.github.epochcoder.kalah.game.events.KalahListener;
 import com.google.common.base.Preconditions;
 
-
 /**
  * represents an instance of a kalah game
  * @author Willie Scholtz
@@ -13,8 +12,8 @@ import com.google.common.base.Preconditions;
  */
 public final class Kalah {
 
+    private final transient KalahListener listener;
     private final KalahConfiguration configuration;
-    private final KalahListener listener;
 
     private boolean started = false;
     private Player currentPlayer;
@@ -168,5 +167,13 @@ public final class Kalah {
      */
     public KalahListener getKalahListener() {
         return this.listener;
+    }
+
+    /**
+     * @return a JSON representation of the entire game state
+     */
+    @Override
+    public String toString() {
+        return KalahSerializer.serializeGame(this);
     }
 }
