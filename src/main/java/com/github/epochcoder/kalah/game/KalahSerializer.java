@@ -21,9 +21,7 @@ public final class KalahSerializer {
      */
     private static final Gson JSON_SERIALIZER = new GsonBuilder()
             .registerTypeAdapter(Kalah.class, new CustomKalahSerializer())
-            .generateNonExecutableJson()
             .serializeNulls()
-            .setPrettyPrinting()
             .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
             .create();
 

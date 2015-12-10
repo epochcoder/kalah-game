@@ -45,11 +45,10 @@
                         <li><a href="https://github.com/epochcoder">Contact</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                Game Options 
+                                Extras 
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">New Local Game</a></li>
                                 <li title="See what happens with direct game output">
                                     <a href="random.jsp">Random CPU vs Random CPU</a>
                                 </li>

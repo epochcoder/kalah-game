@@ -41,3 +41,15 @@
 
     initialize();
 })();
+
+/**
+$.ajax({
+    url: 'api',
+    type: 'post',
+    dataType: 'json',
+    success: function (data) {
+        console.log(data);
+    },
+    data: {action: 'new'}
+});
+ */
