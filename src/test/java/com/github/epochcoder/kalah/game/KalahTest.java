@@ -16,6 +16,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Tests the complete Kalah game according to known 6,3 plays.
@@ -23,11 +25,14 @@ import org.junit.Test;
  */
 public class KalahTest {
 
+    private static final Logger LOG = LoggerFactory.getLogger(KalahTest.class);
+
     /**
      * creates a new game and optionally creates players
      */
     private Kalah createGame(final KalahListener listener,
             boolean addPlayerOne, boolean addPlayerTwo) {
+        LOG.debug("creating new game of Kalah");
         final KalahConfiguration gameConfig = new KalahConfiguration(6, 3);
         final Kalah game = new Kalah(gameConfig, listener);
 
@@ -110,13 +115,17 @@ public class KalahTest {
             Assert.assertEquals("inccorrect current player!",
                     expectedCurrentPlayer, game.getCurrentPlayer());
 
+            LOG.debug("{} is trying to sow from pit {}, the next player should be {}",
+                    expectedCurrentPlayer.getPlayerName(), pit, expectedNextPlayer.getPlayerName());
+
             ((ArgumentPlayer) game.getCurrentPlayer()).playFromArgument(pit);
             if (problem != null) {
                 fail("should have thrown exception");
             }
         } catch (KalahException ex) {
             if (problem != null) {
-                Assert.assertEquals("inccorect problem occurred",
+                LOG.debug("however he should not be able to... due to {}", ex.getProblem());
+                Assert.assertEquals("incorrect problem occurred",
                         ex.getProblem(), problem);
             } else {
                 fail("should not have thrown exception here! - "
@@ -144,6 +153,8 @@ public class KalahTest {
      */
     private void checkPits(ArgumentPlayer player, String expectedPitsAndStores) {
         final List<String> list = Splitter.on("|").splitToList(expectedPitsAndStores);
+        LOG.debug("checking store and pits for player {}, should be {}",
+                player.getPlayerName(), expectedPitsAndStores);
 
         int pitId = 0;
         for (Iterator<String> iterator = list.iterator(); iterator.hasNext(); pitId++) {
@@ -332,7 +343,7 @@ public class KalahTest {
         play(game, 5, null, game.getPlayerOne(), game.getPlayerOne());
         checkAllPits(game, "0|0|0|0|0|0|14", "0|0|0|0|0|0|22");
 
-        Assert.assertEquals("player one should have made tthe end game move should have won!",
+        Assert.assertEquals("player one should have made the end game move!",
                 game.isEndOfGame(), game.getPlayerOne());
 
         Assert.assertEquals("player two should have won!",
