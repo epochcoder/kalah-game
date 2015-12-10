@@ -87,7 +87,6 @@ public final class Pit extends SeedAcceptor {
                 .getGame().getCurrentPlayer();
 
         // if we have one seed, we just received another pit's last seed
-        boolean freeMove = false;
         if (pitOwner.equals(currentPlayer) && this.amountOfSeeds() == 1) {
             final Pit oppositePit = this.getOppositePit(
                     this.getPlayer().getOpponent());
@@ -101,12 +100,13 @@ public final class Pit extends SeedAcceptor {
 
                 // take our new seed and the opponent's seeds and transfer to our store
                 oppositePit.distributeAll(store);
-                freeMove = this.distributeTo(store);
+                this.distributeTo(store);
             }
         }
 
         // I have no idea if we should generate free moves from pits?
-        return freeMove;
+        // not going to give a free move here, according to another game i played online
+        return false;
     }
 
     @Override

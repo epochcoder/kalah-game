@@ -9,12 +9,23 @@ public class KalahException extends Exception {
 
     private static final long serialVersionUID = 1112779592792609968L;
 
+    private final KalahProblem problem;
+
     /**
      * creates a new KalahException with the specified problem string
      * @param problem the problem that occurred, an invalid move, invalid parameters, etc.
      */
     public KalahException(final KalahProblem problem) {
         super(problem.name());
+
+        this.problem = problem;
+    }
+
+    /**
+     * @return the problem that occurred
+     */
+    public KalahProblem getProblem() {
+        return this.problem;
     }
 
     public static enum KalahProblem {
