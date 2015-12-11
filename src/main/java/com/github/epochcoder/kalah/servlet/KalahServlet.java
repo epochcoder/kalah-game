@@ -50,7 +50,7 @@ public class KalahServlet extends HttpServlet {
      * @return a valid player name
      */
     private static String safeName(final String name, int id) {
-        return name == null
+        return name == null || name.trim().isEmpty()
                 ? "Player " + id
                 : name.replaceAll("[^A-zA-Z0-9 ]", "");
     }
@@ -111,6 +111,16 @@ public class KalahServlet extends HttpServlet {
                             .append(exc.getProblem().toString()).append("\"");
                 }
 
+                // check if the player generated a free move
+                final Player freeMovePlayer = ((RequestGameListener) game
+                            .getKalahListener()).getFreeMovePlayer();
+                if (freeMovePlayer != null) {
+                    LOG.debug("currentPlayer player is {}", game.getCurrentPlayer());
+                    LOG.debug("freeMove player is {}", freeMovePlayer);
+                    result.append(", \"freeMovePlayer\":").append("\"")
+                            .append(freeMovePlayer.getPlayerName()).append("\"");
+                }
+
                 // check if the game has ended
                 if (game.isEndOfGame() != null) {
                     // check who won/lost
@@ -123,9 +133,9 @@ public class KalahServlet extends HttpServlet {
                         result.append(", \"tied\":true");
                     } else {
                         result.append(", \"winner\":").append("\"")
-                                .append(whoWon.getPlayerId()).append("\"");
+                                .append(whoWon.getPlayerName()).append("\"");
                         result.append(", \"loser\":").append("\"")
-                                .append(whoLost.getPlayerId()).append("\"");
+                                .append(whoLost.getPlayerName()).append("\"");
                     }
                 }
             }
@@ -146,6 +156,7 @@ public class KalahServlet extends HttpServlet {
 
         private Player winner;
         private Player loser;
+        private Player freeMovePlayer;
 
         @Override
         public void gameStart() {}
@@ -164,8 +175,14 @@ public class KalahServlet extends HttpServlet {
             return this.loser;
         }
 
+        public Player getFreeMovePlayer() {
+            return this.freeMovePlayer;
+        }
+
         @Override
-        public void sowStart(Player player, Pit fromPit) {}
+        public void sowStart(Player player, Pit fromPit) {
+            this.freeMovePlayer = null;
+        }
 
         @Override
         public void sowEnd(Player player, Pit fromPit) {}
@@ -174,7 +191,9 @@ public class KalahServlet extends HttpServlet {
         public void playerSwitch(Player newPlayer) {}
 
         @Override
-        public void freeMove(Player forPlayer) {}
+        public void freeMove(Player forPlayer) {
+            this.freeMovePlayer = forPlayer;
+        }
 
         @Override
         public void pitEmpty(Pit pit) {}

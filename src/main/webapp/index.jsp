@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
+        <title>Kalah Home</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -40,20 +40,10 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
+                        <li class="active"><a href="index.jsp">Home</a></li>
+                        <li><a title="See what happens with direct game output" href="random.jsp">Debug Play</a></li>
                         <li><a href="https://en.wikipedia.org/wiki/Kalah">About</a></li>
                         <li><a href="https://github.com/epochcoder">Contact</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                Extras 
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li title="See what happens with direct game output">
-                                    <a href="random.jsp">Random CPU vs Random CPU</a>
-                                </li>
-                            </ul>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -72,7 +62,7 @@
                             <input type="text" class="form-control" id="playerTwo" placeholder="Darth">
                         </div>
                         <div class="form-group">
-                            <button type="button" class="btn btn-primary">Start Game</button>
+                            <button id="startGame" type="button" class="btn btn-primary">Start Game</button>
                         </div>
                     </form>
                 </div>
@@ -81,7 +71,32 @@
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
-                    <canvas id="game"></canvas>
+                    <div id="game">
+                        <div class="row">
+                            <div id="kalahp1" class="kalah col-md-2"></div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <!-- can easily generate this in next versions, 
+                                         the have pits and seeds be configurable -->
+                                    <div id="p1p5" class="pit col-md-2"></div>
+                                    <div id="p1p4" class="pit col-md-2"></div>
+                                    <div id="p1p3" class="pit col-md-2"></div>
+                                    <div id="p1p2" class="pit col-md-2"></div>
+                                    <div id="p1p1" class="pit col-md-2"></div>
+                                    <div id="p1p0" class="pit col-md-2"></div>
+                                </div>
+                                <div class="row">
+                                    <div id="p2p0" class="pit col-md-2"></div>
+                                    <div id="p2p1" class="pit col-md-2"></div>
+                                    <div id="p2p2" class="pit col-md-2"></div>
+                                    <div id="p2p3" class="pit col-md-2"></div>
+                                    <div id="p2p4" class="pit col-md-2"></div>
+                                    <div id="p2p5" class="pit col-md-2"></div>
+                                </div>
+                            </div>
+                            <div id="kalahp2" class="kalah col-md-2"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-1"></div>
             </div>
@@ -89,12 +104,9 @@
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
                     <div id="output">
-                        <p>
-                            <div class="alert alert-success" role="alert">...</div>
-                            <div class="alert alert-info" role="alert">...</div>
-                            <div class="alert alert-warning" role="alert">...</div>
-                            <div class="alert alert-danger" role="alert">...</div>
-                        </p>
+                        <div class="alert alert-info" role="alert">
+                            Please enter your names and start the game
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-1"></div>
@@ -104,10 +116,7 @@
                 <p><a href="https://github.com/epochcoder">&copy; epochcoder</a> 2015</p>
             </footer>
         </div>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="resources/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
-        <script src="resources/js/vendor/bootstrap.min.js"></script>
-        <script src="resources/js/vendor/raf.js"></script>
+        <script src="resources/js/vendor/prototype.js"></script>
         <script src="resources/js/main.js"></script>
     </body>
 </html>

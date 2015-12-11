@@ -52,6 +52,7 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="index.jsp">Home</a></li>
+                        <li class="active"><a title="See what happens with direct game output" href="random.jsp">Debug Play</a></li>
                         <li><a href="https://en.wikipedia.org/wiki/Kalah">About</a></li>
                         <li><a href="https://github.com/epochcoder">Contact</a></li>
                     </ul>
@@ -158,9 +159,5 @@
                 <p><a href="https://github.com/epochcoder">&copy; epochcoder</a> 2015</p>
             </footer>
         </div>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="resources/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
-        <script src="resources/js/vendor/bootstrap.min.js"></script>
-        <script src="resources/js/main.js"></script>
     </body>
 </html>

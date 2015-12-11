@@ -1,3 +1,50 @@
-form#newGameForm {
+form#newGameForm,
+div#game {
     margin: 10px 0;
+}
+
+div.kalah {
+    height: 100px;
+    line-height: 90px;
+    text-align: center;
+    position: relative;
+}
+
+div.kalah > span.label {
+    position: absolute;
+    top: 5px;
+}
+
+div.kalah > h2 {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+div.pit {
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+}
+
+div.pit > span.badge {
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+div.kalah#kalahp1,
+div.pit[id^="p1"] {
+    background-color: #ddd;
+}
+
+div.kalah#kalahp1 > span.label {
+    left: 5px;
+}
+
+div.pit[id^="p2"],
+div.kalah#kalahp2 {
+    background-color: #eee;
+}
+
+div.kalah#kalahp2 > span.label {
+    right: 5px;
 }

@@ -101,7 +101,9 @@ public final class Pit extends SeedAcceptor {
 
                 // take our new seed and the opponent's seeds and transfer to our store
                 oppositePit.distributeAll(store);
-                this.distributeTo(store);
+                // since we don't support free moves from this method, 
+                // set this call as a special move
+                this.distributeTo(store, false);
             }
         }
 

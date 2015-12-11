@@ -94,7 +94,7 @@ public abstract class SeedAcceptor implements Serializable {
      * @return a boolean indicating if the current player has
      * another turn, since this is a turn based game
      */
-    private boolean distributeTo(final SeedAcceptor acceptor, final boolean normalMove) {
+    protected boolean distributeTo(final SeedAcceptor acceptor, final boolean normalMove) {
         Preconditions.checkArgument(!this.equals(acceptor), "cannot distribute seeds to ourselves!");
 
         boolean anotherTurn = false;
