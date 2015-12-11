@@ -58,13 +58,34 @@ var Game = (function() {
     }
 
     function updatePlayerStoreAndPits(player) {
-        $('kalahp' + player.playerId).update('<span class="label label-primary">'
+        var kalah = $('kalahp' + player.playerId),
+            pitEl, isActive;
+    
+        // check if this is the active player.
+        isActive = player.playerId === currentPlayer;
+        
+        kalah.update('<span class="label label-primary">'
                 + player.playerName + '</span><h2>'
                 + player.store.seeds.length + '</h2>');
+        
+        // set active states
+        kalah[(isActive ? 'add' : 'remove') + 'ClassName']('active');
+        
         player.pits.each(function(pit) {
-            $('p' + player.playerId + 'p' + pit.pitId)
-                    .update('<span class="badge">' + pit.seeds.length + '</span>');
+            pitEl = $('p' + player.playerId + 'p' + pit.pitId);
+            pitEl.update('<span class="badge">' + pit.seeds.length + '</span>');
+            
+            // set active states
+            pitEl[(isActive ? 'add' : 'remove') + 'ClassName']('active');
         });
+
+        // get opposite player first pit for styling
+        var opp = player.playerId === playerOne.playerId 
+                ? playerTwo.playerId : playerOne.playerId;
+                
+        // set opposite player first pit active style
+        $('p' + opp + 'p0')[(isActive ? 'add' : 'remove')
+                    + 'ClassName']('opp-active');
     }
 
     function getCurrentPlayer() {
@@ -77,7 +98,6 @@ var Game = (function() {
      */
     function updateState(state) {
         if (state) {
-            console.log(state);
             config = state.game.configuration;
             currentPlayer = state.game.currentPlayer;
             playerOne = state.game.playerOne;
