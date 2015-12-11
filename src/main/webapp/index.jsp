@@ -1,3 +1,7 @@
+<%@page import="org.apache.commons.lang.StringEscapeUtils"%>
+<%@page import="com.github.epochcoder.kalah.game.Kalah"%>
+<%@page import="com.github.epochcoder.kalah.servlet.KalahServlet"%>
+<%@page import="com.github.epochcoder.kalah.game.KalahConfiguration"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!doctype html>
 <html class="no-js" lang="">
@@ -23,6 +27,10 @@
             <script>window.html5 || document.write('<script src="resources/js/vendor/html5shiv.js"><\/script>')</script>
         <![endif]-->
     </head>
+    <%
+        final Kalah game = (Kalah) session.getAttribute(KalahServlet.GAME_KEY);
+        final boolean hasGame = game != null;
+    %>
     <body>
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -55,11 +63,23 @@
                     <form id="newGameForm" class="form-group">
                         <div class="form-group">
                             <label for="playerTwo">Player One Name</label>
-                            <input type="text" class="form-control" id="playerOne" placeholder="Luke">
+                            <input type="text" class="form-control" id="playerOne" placeholder="Luke" value="<%= StringEscapeUtils.escapeHtml(hasGame ? game.getPlayerOne().getPlayerName() : "") %>">
                         </div>
                         <div class="form-group">
                             <label for="playerOne">Player Two Name</label>
-                            <input type="text" class="form-control" id="playerTwo" placeholder="Darth">
+                            <input type="text" class="form-control" id="playerTwo" placeholder="Darth" value="<%= StringEscapeUtils.escapeHtml(hasGame ? game.getPlayerTwo().getPlayerName() : "") %>">
+                        </div>
+                        <div class="form-group">
+                            <label for="pps">Pits Per Side</label>
+                            <select class="form-control" id="pps">
+                                <option value="2" <% if (hasGame && 2 == game.getConfiguration().getPits()) {%>selected="selected"<%} %>>2</option>
+                                <option value="4" <% if (hasGame && 4 == game.getConfiguration().getPits()) {%>selected="selected"<%} %>>4</option>
+                                <option value="6" <% if (hasGame && 6 == game.getConfiguration().getPits()) {%>selected="selected"<%} %>>6</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="spp">Seeds Per Pit</label>
+                            <input type="number" class="form-control" id="spp" min="<%= KalahConfiguration.MIN_SEEDS %>" max="<%= KalahConfiguration.MAX_SEEDS %>" value="<%= hasGame ? game.getConfiguration().getSeeds(): KalahConfiguration.MIN_SEEDS %>">
                         </div>
                         <div class="form-group">
                             <button id="startGame" type="button" class="btn btn-primary">Start Game</button>
@@ -71,28 +91,12 @@
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
-                    <div id="game">
+                    <div id="game" style="display: none;">
                         <div class="row">
                             <div id="kalahp1" class="kalah col-md-2"></div>
                             <div class="col-md-8">
-                                <div class="row">
-                                    <!-- can easily generate this in next versions, 
-                                         the have pits and seeds be configurable -->
-                                    <div id="p1p5" class="pit col-md-2"></div>
-                                    <div id="p1p4" class="pit col-md-2"></div>
-                                    <div id="p1p3" class="pit col-md-2"></div>
-                                    <div id="p1p2" class="pit col-md-2"></div>
-                                    <div id="p1p1" class="pit col-md-2"></div>
-                                    <div id="p1p0" class="pit col-md-2"></div>
-                                </div>
-                                <div class="row">
-                                    <div id="p2p0" class="pit col-md-2"></div>
-                                    <div id="p2p1" class="pit col-md-2"></div>
-                                    <div id="p2p2" class="pit col-md-2"></div>
-                                    <div id="p2p3" class="pit col-md-2"></div>
-                                    <div id="p2p4" class="pit col-md-2"></div>
-                                    <div id="p2p5" class="pit col-md-2"></div>
-                                </div>
+                                <div id="playerOnePits" class="row"></div>
+                                <div id="playerTwoPits" class="row"></div>
                             </div>
                             <div id="kalahp2" class="kalah col-md-2"></div>
                         </div>
@@ -116,6 +120,7 @@
                 <p><a href="https://github.com/epochcoder">&copy; epochcoder</a> 2015</p>
             </footer>
         </div>
+        <script>var hasGame = <%= hasGame %>;</script>
         <script src="resources/js/vendor/prototype.js"></script>
         <script src="resources/js/main.js"></script>
     </body>

@@ -9,6 +9,7 @@ import com.github.epochcoder.kalah.game.entity.Seed;
 import com.github.epochcoder.kalah.game.entity.SeedAcceptor;
 import com.github.epochcoder.kalah.game.entity.impl.RequestPlayer;
 import com.github.epochcoder.kalah.game.events.KalahListener;
+import com.google.common.primitives.Ints;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
@@ -31,12 +32,6 @@ public class KalahServlet extends HttpServlet {
 
     private static final long serialVersionUID = -4153650942420492867L;
     private static final Logger LOG = LoggerFactory.getLogger(KalahServlet.class);
-
-    /**
-     * default to a 6-seed, 6-pit game.
-     * not making this configurable via client yet
-     */
-    private static final KalahConfiguration CONFIG = new KalahConfiguration(6, 6);
 
     /**
      * the session key for the kalah game
@@ -79,7 +74,14 @@ public class KalahServlet extends HttpServlet {
 
                 // if the new action was passed, create a new game
                 if (isNew) {
-                    game = new Kalah(CONFIG, new RequestGameListener());
+                    final Integer pps = Ints.tryParse(req.getParameter("pps"));
+                    final Integer spp = Ints.tryParse(req.getParameter("spp"));
+
+                    // load client values, default to 6, 6
+                    final KalahConfiguration config = new KalahConfiguration(
+                            pps != null ? pps : 6, spp != null ? spp : 6);
+
+                    game = new Kalah(config, new RequestGameListener());
 
                     final String playerOneName = safeName(req.getParameter("playerOne"), 1);
                     final String playerTwoName = safeName(req.getParameter("playerTwo"), 2);
